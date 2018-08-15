@@ -3,6 +3,8 @@ package com.teste.clientapp.consume;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+
 public class ServiceConsumer {
     private String ipAddress;
     private Double latitude;
@@ -14,16 +16,10 @@ public class ServiceConsumer {
 
     private RestTemplate restTemplate = new RestTemplate();
 
-//        setCity("São paulo");
-//        setLocation(2222);
-//        setTempMax(15);
-//        setTempMin(20);
-
 
     public Data getIpData() {
         return ipData;
     }
-
 
     public ServiceConsumer(String ipAddress) {
 
@@ -35,25 +31,38 @@ public class ServiceConsumer {
 
     }
 
+    private void retrieveShortes(int[] distances, int[] woeids, String[] Cities) {
 
+        System.out.println(Arrays.toString(distances));
+        System.out.println(Arrays.toString(distances));
+        System.out.println(Arrays.toString(distances));
 
+    }
 
 
     private void retrieveLocation() {
         longitude = ipData.getLongitude();
         latitude = ipData.getLatitude();
         final String urlLocation = "https://www.metaweather.com/api/location/search/?lattlong=" + latitude + "," + longitude;
+        int i = 0;
+        ResponseEntity<LocationData[]> location = restTemplate.getForEntity(urlLocation, LocationData[].class);
+        LocationData[] ld ;
 
+        ld = location.getBody();
 
+        if (ld.length != 0) {
+            int distances[] = new int[ld.length];
+            String cities[] = new String[ld.length];
+            int woeids[] = new int[ld.length];
 
-
-
-
-//        ResponseEntity<? extends ArrayList<LocationData >> locationData = restTemplate.getForEntity(urlLocation,
-//                (Class<? extends ArrayList <LocationData>>)ArrayList.class,ld);
-
-//        System.out.println(ld.getDistance());
-
+            for (LocationData locationData : ld) {
+                distances[i] = locationData.getDistance();
+                cities[i] = locationData.getTitle();
+                woeids[i] = locationData.getWoeid();
+                i++;
+            }
+            retrieveShortes(distances, woeids, cities);
+        }
 
 
 
@@ -72,28 +81,6 @@ public class ServiceConsumer {
 
     }
 
-//    static void main (String[] args){
-//
-//
-//        String ip = ipAddress;
-//        Double[] city = new Double[0];
-//        Double  longitude;
-//        Double latitude;
-//
-//        RestTemplate restTemplate = new RestTemplate();
-//        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(url + ip, GeoLocation.class);
-//        System.out.println(geo.getBody().
-//        getStatus());
-//
-//        Data data = geo.getBody().getData();
-//        latitude = Double.parseDouble(data.getLatitude());
-//        longitude = Double.parseDouble(data.getLongitude());
-//        city[0] = latitude;
-//        city[1] = longitude;
-//
-//        System.out.println(data.getContinent_name());
-//
-//        this.City = city;
 
 }
 

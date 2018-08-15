@@ -6,12 +6,12 @@ public class LocationData {
     private String title;
     private String location_type;
     private int woeid;
-    private float[] latt_long;
+    private String latt_long;
 
     public LocationData() {
     }
 
-    public LocationData(int distance, String title, String location_type, int woeid, float[] latt_long) {
+    public LocationData(int distance, String title, String location_type, int woeid, String latt_long) {
         this.distance = distance;
         this.title = title;
         this.location_type = location_type;
@@ -51,11 +51,11 @@ public class LocationData {
         this.woeid = woeid;
     }
 
-    public float[] getLatt_long() {
+    public String getLatt_long() {
         return latt_long;
     }
 
-    public void setLatt_long(float[] latt_long) {
+    public void setLatt_long(String latt_long) {
         this.latt_long = latt_long;
     }
 }

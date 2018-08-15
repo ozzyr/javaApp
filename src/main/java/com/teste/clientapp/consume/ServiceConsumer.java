@@ -35,12 +35,30 @@ public class ServiceConsumer {
 
     }
 
+
+
+
+
     private void retrieveLocation() {
-        latitude = ipData.getLongitude();
-        longitude = ipData.getLatitude();
-        final String urlipdata = "https://www.metaweather.com/api/location/search/?lattlong={latitude},{longitude}";
-        ResponseEntity<LocationData> locationData = restTemplate.getForEntity(urlipdata, LocationData.class);
-      }
+        longitude = ipData.getLongitude();
+        latitude = ipData.getLatitude();
+        final String urlLocation = "https://www.metaweather.com/api/location/search/?lattlong=" + latitude + "," + longitude;
+
+
+
+
+
+
+//        ResponseEntity<? extends ArrayList<LocationData >> locationData = restTemplate.getForEntity(urlLocation,
+//                (Class<? extends ArrayList <LocationData>>)ArrayList.class,ld);
+
+//        System.out.println(ld.getDistance());
+
+
+
+
+
+    }
 
     private void retrieveipData() {
 

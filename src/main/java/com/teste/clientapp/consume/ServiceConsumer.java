@@ -5,7 +5,8 @@ import org.springframework.web.client.RestTemplate;
 
 public class ServiceConsumer {
     private String ipAddress;
-    private Double[] location = new Double[0];
+    private Double latitude;
+    private Double longitude;
     private int woeid;
     private int tempMax;
     private int tempMin;
@@ -19,12 +20,9 @@ public class ServiceConsumer {
 //        setTempMin(20);
 
 
-
     public Data getIpData() {
         return ipData;
     }
-
-
 
 
     public ServiceConsumer(String ipAddress) {
@@ -38,22 +36,16 @@ public class ServiceConsumer {
     }
 
     private void retrieveLocation() {
-
-        final String urlipdata = "https://ipvigilante.com/8.8.8.8";
-        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(urlipdata, GeoLocation.class);
-
-        location[2] = ipData.getLatitude();
-        System.out.println(location[2] );
-        //        location[1] = ipData.getLongitude();
-//        System.out.println(location[0] +"maria"+location[1] );
-
-
-    }
+        latitude = ipData.getLongitude();
+        longitude = ipData.getLatitude();
+        final String urlipdata = "https://www.metaweather.com/api/location/search/?lattlong={latitude},{longitude}";
+        ResponseEntity<LocationData> locationData = restTemplate.getForEntity(urlipdata, LocationData.class);
+      }
 
     private void retrieveipData() {
 
         final String urlipdata = "https://ipvigilante.com/";
-        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(urlipdata+ipAddress, GeoLocation.class);
+        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(urlipdata + ipAddress, GeoLocation.class);
         ipData = geo.getBody().getData();
 
     }

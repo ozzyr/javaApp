@@ -1,6 +1,5 @@
 package com.teste.clientapp.endpoint;
 
-import com.teste.clientapp.consume.Data;
 import com.teste.clientapp.consume.ServiceConsumer;
 import com.teste.clientapp.error.CustomErrorType;
 import com.teste.clientapp.model.Client;
@@ -67,16 +66,14 @@ public class ClientEndpoint {
 
         Date criado = new Date( );
         String ipAddress = request.getRemoteAddr();
-
         ServiceConsumer sc = new ServiceConsumer(ipAddress);
-        Data ipData = sc.getIpData();
 
-        client = clientDAO.save(client);
+        new ResponseEntity<>(client = clientDAO.save(client), HttpStatus.OK);
 
         Requester requester = new Requester();
         requester.setCreatAt(criado);
-        requester.setCity(ipData.getCity_name());
-        requester.setLocation(222);
+        requester.setCity(sc.getCity());
+        requester.setLocation(sc.getWoeid());
         requester.setTempMax(15);
         requester.setTempMin(20);
         requester.setUserId(client.getId());

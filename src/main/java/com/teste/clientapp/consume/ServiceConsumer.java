@@ -3,12 +3,13 @@ package com.teste.clientapp.consume;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 //private Date creatAt;
 //private int tempMax;
 //private int tempMin;
-
 
 public class ServiceConsumer {
     private String ipAddress;
@@ -16,8 +17,8 @@ public class ServiceConsumer {
     private Double longitude;
     private String city;
     private int woeid;
-    private int tempMax;
-    private int tempMin;
+    private double tempMax;
+    private double tempMin;
     private Data ipData;
     private Date createAt;
 
@@ -28,14 +29,15 @@ public class ServiceConsumer {
         return ipData;
     }
 
+
     public ServiceConsumer(String ipAddress) {
 
         this.ipAddress = ipAddress;
         this.ipAddress = "187.122.5.173";
 
-        retrieveipData();
+        retrieveDatafromIp();
         retrieveLocation();
-
+        retrieveWeatherData();
     }
 
     private void retrieveDistances(int[] distances, int[] woeids, String[] cities) {
@@ -48,18 +50,14 @@ public class ServiceConsumer {
                 city = cities[i];
             }
         }
-        System.out.println(shortd);
-        System.out.println(city);
-        System.out.println(woeid);
     }
-
 
     private void retrieveLocation() {
         longitude = ipData.getLongitude();
         latitude = ipData.getLatitude();
-        final String urlLocation = "https://www.metaweather.com/api/location/search/?lattlong="+latitude+","+longitude;
-        System.out.println(urlLocation);
+        final String urlLocation = "https://www.metaweather.com/api/location/search/?lattlong=" + latitude + "," + longitude;
         int i = 0;
+
         ResponseEntity<LocationData[]> location = restTemplate.getForEntity(urlLocation, LocationData[].class);
         LocationData[] ld;
 
@@ -79,20 +77,65 @@ public class ServiceConsumer {
             retrieveDistances(distances, woeids, cities);
         }
 
-
     }
 
-    private void retrieveipData() {
+    private void retrieveDatafromIp() {
 
-        final String urlipdata = "https://ipvigilante.com/";
-        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(urlipdata + ipAddress, GeoLocation.class);
+        final String urlipdata = "https://ipvigilante.com/" + ipAddress;
+        ResponseEntity<GeoLocation> geo = restTemplate.getForEntity(urlipdata, GeoLocation.class);
         ipData = geo.getBody().getData();
 
     }
 
     private void retrieveWeatherData() {
-        final String urlLocation = "https://www.metaweather.com/api/location/search/?lattlong=-46.7833,-23.5667";
 
+        int i = 0;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+        createAt = date;
+        final String urlweather = "https://www.metaweather.com/api/location/" + woeid + "/" + dateFormat.format(date);
+        System.out.println(urlweather);
+        System.out.println(dateFormat.format(date));
+
+        ResponseEntity<WeatherData[]> weather = restTemplate.getForEntity(urlweather, WeatherData[].class);
+        WeatherData[] wd;
+        wd = weather.getBody();
+        double[] tempMaxs = new double[wd.length];
+        double[] tempMins = new double[wd.length];
+        if (wd.length != 0) {
+
+            for (WeatherData weatherData : wd) {
+                tempMaxs[i] = weatherData.getMax_temp();
+                tempMins[i] = weatherData.getMin_temp();
+                i++;
+            }
+            retrieveTemperature(tempMaxs,tempMins);
+        }
+
+
+    }
+
+
+    private void retrieveTemperature(double[] tmax, double[] tmin){
+
+        double maxaux = Double.MIN_VALUE;
+        double minaux = Double.MAX_VALUE;
+
+        for (int i = 0; i < tmax.length; i++) {
+            if (tmax[i] > maxaux) {
+                maxaux = tmax[i];
+
+            }
+            tempMax = maxaux;
+        }
+
+        for (int y = 0; y < tmin.length; y++) {
+            if (tmin[y] < minaux) {
+                minaux = tmin[y];
+                System.out.println(minaux);
+            }
+            tempMin = minaux;
+        }
 
     }
 
@@ -108,11 +151,11 @@ public class ServiceConsumer {
         return woeid;
     }
 
-    public int getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
-    public int getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 

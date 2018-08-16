@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 
 @RestController
@@ -35,10 +34,7 @@ public class ClientEndpoint {
                           RequesterRepository requesterDAO) {
         this.clientDAO = clientDAO;
         this.requesterDAO = requesterDAO;
-
     }
-
-
 
     @Autowired
     private HttpServletRequest request;
@@ -60,32 +56,25 @@ public class ClientEndpoint {
 
     }
 
-
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Client client) {
 
-        Date criado = new Date( );
         String ipAddress = request.getRemoteAddr();
         ServiceConsumer sc = new ServiceConsumer(ipAddress);
 
-        new ResponseEntity<>(client = clientDAO.save(client), HttpStatus.OK);
+        client = clientDAO.save(client);
 
         Requester requester = new Requester();
-        requester.setCreatAt(criado);
+        requester.setCreatAt(sc.getCreateAt());
         requester.setCity(sc.getCity());
         requester.setLocation(sc.getWoeid());
-        requester.setTempMax(15);
-        requester.setTempMin(20);
+        requester.setTempMax(sc.getTempMax());
+        requester.setTempMin(sc.getTempMin());
         requester.setUserId(client.getId());
         requesterDAO.save(requester);
 
-
-
-
-
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
-
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
@@ -101,6 +90,7 @@ public class ClientEndpoint {
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Client client) {
         clientDAO.save(client);
-        return new ResponseEntity<>(new CustomErrorType("all changes has been done " + client), HttpStatus.OK);
+
+        return new ResponseEntity<>(client, HttpStatus.OK);
     }
 }

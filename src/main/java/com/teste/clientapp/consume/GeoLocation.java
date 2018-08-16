@@ -31,4 +31,6 @@ public class GeoLocation {
         this.data = data;
     }
 
+
 }
+

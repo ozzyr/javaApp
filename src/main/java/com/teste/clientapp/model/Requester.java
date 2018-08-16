@@ -15,8 +15,8 @@ public class Requester extends AbstractEntity {
     private int location;
     private String city;
     private Date creatAt;
-    private int tempMax;
-    private int tempMin;
+    private double tempMax;
+    private double tempMin;
 
     public Date getCreatAt() {
         return creatAt;
@@ -58,21 +58,19 @@ public class Requester extends AbstractEntity {
         this.city = city;
     }
 
-    public int getTempMax() {
+    public double getTempMax() {
         return tempMax;
     }
 
-    public void setTempMax(int tempMax) {
+    public void setTempMax(double tempMax) {
         this.tempMax = tempMax;
     }
 
-    public int getTempMin() {
+    public double getTempMin() {
         return tempMin;
     }
 
-    public void setTempMin(int tempMin) {
+    public void setTempMin(double tempMin) {
         this.tempMin = tempMin;
     }
-
-
 }

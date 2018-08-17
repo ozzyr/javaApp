@@ -29,17 +29,18 @@ public class ServiceConsumer {
         return ipData;
     }
 
+    // construto da classe recebendo  o IP como parametro
 
     public ServiceConsumer(String ipAddress) {
 
         this.ipAddress = ipAddress;
-        this.ipAddress = "187.122.5.173";
+        //this.ipAddress = "187.122.5.173";//teste ip externo
 
         retrieveDatafromIp();
         retrieveLocation();
         retrieveWeatherData();
     }
-
+    // verifica no array de distancias qual a menor : mais próxima da passada.
     private void retrieveDistances(int[] distances, int[] woeids, String[] cities) {
         int shortd = Integer.MAX_VALUE;
 
@@ -51,7 +52,7 @@ public class ServiceConsumer {
             }
         }
     }
-
+    // recupera dados do tempo apartir da localização por Lat e Long
     private void retrieveLocation() {
         longitude = ipData.getLongitude();
         latitude = ipData.getLatitude();
@@ -78,7 +79,7 @@ public class ServiceConsumer {
         }
 
     }
-
+    // retorna retonar latitude e longitude por ip
     private void retrieveDatafromIp() {
 
         final String urlipdata = "https://ipvigilante.com/" + ipAddress;
@@ -86,7 +87,7 @@ public class ServiceConsumer {
         ipData = geo.getBody().getData();
 
     }
-
+    // retorna informações do clima a partir de uma data e uma localidade WoeID (where on earth ID)
     private void retrieveWeatherData() {
 
         int i = 0;
@@ -112,11 +113,10 @@ public class ServiceConsumer {
             retrieveTemperature(tempMaxs,tempMins);
         }
 
-
     }
 
-
-    private void retrieveTemperature(double[] tmax, double[] tmin){
+// retorna min e max temperatura do array de temperaturas
+    private void retrieveTemperature( double[] tmax, double[] tmin){
 
         double maxaux = Double.MIN_VALUE;
         double minaux = Double.MAX_VALUE;
@@ -138,7 +138,7 @@ public class ServiceConsumer {
         }
 
     }
-
+// getters
     public Date getCreateAt() {
         return createAt;
     }

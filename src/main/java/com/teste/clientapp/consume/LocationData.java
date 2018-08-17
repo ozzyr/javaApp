@@ -1,5 +1,5 @@
 package com.teste.clientapp.consume;
-
+/*classe binding para resgatar dados da api metaweather*/
 public class LocationData {
 
     private int distance;

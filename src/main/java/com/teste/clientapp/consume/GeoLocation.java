@@ -1,6 +1,6 @@
 
 package com.teste.clientapp.consume;
-
+/*classe binding para resgatar dados da api metaweather*/
 public class GeoLocation {
 
     private String status;

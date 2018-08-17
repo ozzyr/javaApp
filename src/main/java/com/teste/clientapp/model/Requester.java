@@ -7,6 +7,10 @@ import java.util.Date;
 
 @Entity
 @Qualifier("RequesterRepo")
+/*
+*   classe para o crd dos dados de acesso
+*
+* */
 
 public class Requester extends AbstractEntity {
 

@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("clients")
+
+/*classe que controla todos os endpoints*/
+
 public class ClientEndpoint {
     @Autowired
     @Qualifier("ClientRepo")
@@ -38,12 +41,12 @@ public class ClientEndpoint {
 
     @Autowired
     private HttpServletRequest request;
-
+    // get na raiz listando todos os clients
     @GetMapping
     public ResponseEntity<?> listAll() {
         return new ResponseEntity<>(clientDAO.findAll(), HttpStatus.OK);
     }
-
+    // get com parametro ID retornar apenas um cliente
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> getClientById(@PathVariable("id") Long id) {
         boolean clientIs = clientDAO.existsById(id);
@@ -55,7 +58,9 @@ public class ClientEndpoint {
         return new ResponseEntity<>(new CustomErrorType("client not found"), HttpStatus.NOT_FOUND);
 
     }
-
+    /* Post com dados de Nome e idade - on mesmo instante em que recupera e armazena dados
+    * IP, Latitude e long, Localização, dados do tempo: temperatura min e max
+    */
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Client client) {
 
@@ -75,7 +80,7 @@ public class ClientEndpoint {
 
         return new ResponseEntity<>(client, HttpStatus.OK);
     }
-
+    // delete a partir do ID
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         boolean clientIs = clientDAO.existsById(id);
@@ -86,7 +91,7 @@ public class ClientEndpoint {
         }
         return new ResponseEntity<>(new CustomErrorType("nothing has changed"), HttpStatus.NOT_FOUND);
     }
-
+    // altera passando id,name e idade
     @PutMapping
     public ResponseEntity<?> update(@RequestBody Client client) {
         clientDAO.save(client);

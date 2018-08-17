@@ -8,6 +8,11 @@ import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
 @MappedSuperclass
+/*
+*   modelo para qualquer model a ser implementado *
+*
+* */
+
 public class AbstractEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

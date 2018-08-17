@@ -7,6 +7,10 @@ import javax.persistence.Entity;
 @Entity
 @Qualifier("ClientRepo")
 
+/*
+*   Classe que para crud de dados do cliente
+* */
+
 public class Client extends AbstractEntity {
     private String name;
     private Long id;

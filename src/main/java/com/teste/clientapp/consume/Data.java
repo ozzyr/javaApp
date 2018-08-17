@@ -1,14 +1,9 @@
 package com.teste.clientapp.consume;
 
-// class para mapear retorno
+// classe para mapear /*classe binding para resgatar dados da api ipvigilante
 public class Data {
 
-//    private String ipv4;
-//    private String continent_name;
-//    private String country_name;
-//    private String subdivision_1_name;
-//    private String subdivision_2_name;
-//    private String city_name;
+
     private Double latitude;
     private Double longitude;
 

@@ -1,5 +1,7 @@
 package com.teste.clientapp.error;
 
+/*retornar mensagem mais amigaveis */
+
 public class CustomErrorType {
 
     private String errorMessage;
